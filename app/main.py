@@ -40,7 +40,7 @@ client = openai.OpenAI(
 
 instructor_client = instructor.from_openai(client, mode=instructor.Mode.JSON)
 
-MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
+MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:1.5b")
 
 # =============================================================================
 # BONUS: SEMANTIC CACHE cu sentence-transformers
@@ -469,7 +469,8 @@ PRODUS B: {prod_b.titlu}
 Descriere: {prod_b.descriere[:4000]}
 
 Generează tabel comparativ cu feature-urile relevante pentru preferințele userului.
-Pentru fiecare feature, explică raționamentul ÎNAINTE de a da verdictul."""
+Pentru fiecare feature, explică raționamentul ÎNAINTE de a da verdictul.
+Generează MAXIM 3 features relevante, nu mai multe."""
 
     try:
         result = instructor_client.chat.completions.create(
@@ -481,7 +482,7 @@ Pentru fiecare feature, explică raționamentul ÎNAINTE de a da verdictul."""
             response_model=ComparisonResult,
             max_retries=2,
             temperature=0,
-            max_tokens=4000
+            max_tokens=1500
         )
         return result
     except Exception as e:
